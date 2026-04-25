@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 근로 배정 달력</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e2e8f0;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+        .calendar-header-day {
+            background: #f8fafc;
+            padding: 15px;
+            text-align: center;
+            font-weight: 700;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .calendar-day {
+            min-height: 120px;
+            padding: 10px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+        .calendar-day:hover { background: #f8fafc; }
+        .calendar-day.today { background: #f0f9ff; }
+        .calendar-day .date-num { font-weight: 700; margin-bottom: 10px; display: block; }
+        .calendar-day.sunday .date-num { color: #ef4444; }
+        .calendar-day.saturday .date-num { color: #3b82f6; }
+        .calendar-day.other-month { opacity: 0.3; }
+        
+        .assign-item {
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            justify-content: space-between;
+        }
+        .assign-blue { background: #dbeafe; color: #1e40af; border-left: 3px solid #3b82f6; }
+        .assign-green { background: #dcfce7; color: #166534; border-left: 3px solid #22c55e; }
+        .assign-orange { background: #ffedd5; color: #9a3412; border-left: 3px solid #f97316; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협 ▾</li>
+            <li class="sidebar-item" onclick="location.href='index.html'">근로배정현황</li>
+            <li class="sidebar-item" onclick="location.href='assign-work.html'">근로배정하기</li>
+            <li class="sidebar-item selected" onclick="location.href='calendar.html'">근로배정달력</li>
+            <li class="sidebar-item" onclick="location.href='assign-info.html'">근로배정정보</li>
+            <li class="sidebar-item parent">기본정보관리</li>
+            <li class="sidebar-item" onclick="location.href='center-info.html'">센터정보</li>
+            <li class="sidebar-item" onclick="location.href='member-list.html'">회원관리</li>
+            <li class="sidebar-item" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item" onclick="location.href='farmer-list.html'">농가정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">설정 ▾</li>
+            <li class="sidebar-item" onclick="location.href='setting-msg.html'" style="padding-left: 30px;">문자설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-cost.html'" style="padding-left: 30px;">비용설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-category.html'" style="padding-left: 30px;">카테고리설정</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">홈 > 근로배정달력</div>
+            <div class="header-right">
+                <span>관리자님 환영합니다</span>
+                <span>비밀번호변경</span>
+                <span>로그아웃</span>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <div class="content-title" style="display: flex; align-items: center; gap: 20px;">
+                🗓️ 근로 배정 달력
+                <div style="margin-left: auto; display: flex; align-items: center; gap: 15px;">
+                    <button style="border: 1px solid #d1d5db; background: white; padding: 5px 15px; border-radius: 6px; cursor: pointer;">< 이전달</button>
+                    <b style="font-size: 20px;">2024년 4월</b>
+                    <button style="border: 1px solid #d1d5db; background: white; padding: 5px 15px; border-radius: 6px; cursor: pointer;">다음달 ></button>
+                </div>
+                <button style="background: var(--btn-blue); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">오늘</button>
+            </div>
+
+            <!-- Calendar Container -->
+            <div style="background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <div class="calendar-grid">
+                    <!-- Week Headers -->
+                    <div class="calendar-header-day" style="color: #ef4444;">일</div>
+                    <div class="calendar-header-day">월</div>
+                    <div class="calendar-header-day">화</div>
+                    <div class="calendar-header-day">수</div>
+                    <div class="calendar-header-day">목</div>
+                    <div class="calendar-header-day">금</div>
+                    <div class="calendar-header-day" style="color: #3b82f6;">토</div>
+
+                    <!-- Days -->
+                    <div class="calendar-day sunday other-month"><span class="date-num">31</span></div>
+                    <div class="calendar-day today"><span class="date-num">1</span>
+                        <div class="assign-item assign-blue"><span>풍년농장</span> <b>5명</b></div>
+                        <div class="assign-item assign-green"><span>햇살과원</span> <b>2명</b></div>
+                    </div>
+                    <div class="calendar-day"><span class="date-num">2</span>
+                        <div class="assign-item assign-blue"><span>풍년농장</span> <b>3명</b></div>
+                    </div>
+                    <div class="calendar-day"><span class="date-num">3</span></div>
+                    <div class="calendar-day"><span class="date-num">4</span>
+                        <div class="assign-item assign-orange"><span>대박상회</span> <b>8명</b></div>
+                    </div>
+                    <div class="calendar-day"><span class="date-num">5</span></div>
+                    <div class="calendar-day saturday"><span class="date-num">6</span></div>
+
+                    <div class="calendar-day sunday"><span class="date-num">7</span></div>
+                    <div class="calendar-day"><span class="date-num">8</span>
+                        <div class="assign-item assign-blue"><span>풍년농장</span> <b>4명</b></div>
+                    </div>
+                    <div class="calendar-day"><span class="date-num">9</span></div>
+                    <div class="calendar-day"><span class="date-num">10</span></div>
+                    <div class="calendar-day"><span class="date-num">11</span></div>
+                    <div class="calendar-day"><span class="date-num">12</span></div>
+                    <div class="calendar-day saturday"><span class="date-num">13</span></div>
+                    <!-- 반복되는 날짜들... -->
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

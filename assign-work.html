@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 근로 배정하기</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+    <style>
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+        .date-btn {
+            padding: 6px 12px;
+            background: #64748b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .date-btn:hover { background: #475569; }
+
+        .summary-boxes {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-box {
+            flex: 1;
+            background: #f4fbfa;
+            border: 1px solid #b2d8d8;
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+        .summary-box span.title { color: #0d9488; }
+        .summary-box span.title-blue { color: #0ea5e9; }
+        .summary-box .num-blue { color: #2563eb; font-size: 22px; margin: 0 2px; }
+        .summary-box .num-red { color: #dc2626; font-size: 22px; margin: 0 2px; }
+
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .action-btn {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .btn-navy { background: #2b458b; }
+        .btn-teal { background: #00897b; }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+        .data-table th {
+            background: #f1f5f9;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+        }
+        .data-table td {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+        
+        .badge-am {
+            background: #3b82f6;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge-pm {
+            background: #f97316;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .link-text {
+            color: #2563eb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .num-blue { color: #2563eb; font-weight: bold; }
+        .num-red { color: #dc2626; font-weight: bold; }
+
+        .input-num {
+            width: 45px;
+            padding: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-align: right;
+            background: #f8fafc;
+            font-size: 14px;
+        }
+
+        .footer-row {
+            background: #f1f5f9;
+            font-weight: 700;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 25px;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #0ea5e9;
+        }
+
+        .auto-assign-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 40px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .auto-assign-btn:hover { background: #3b82f6; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협 ▾</li>
+            <li class="sidebar-item" onclick="location.href='index.html'">근로배정현황</li>
+            <li class="sidebar-item selected" onclick="location.href='assign-work.html'">근로배정하기</li>
+            <li class="sidebar-item" onclick="location.href='calendar.html'">근로배정달력</li>
+            <li class="sidebar-item" onclick="location.href='assign-info.html'">근로배정정보</li>
+            <li class="sidebar-item parent">기본정보관리</li>
+            <li class="sidebar-item" onclick="location.href='center-info.html'">센터정보</li>
+            <li class="sidebar-item" onclick="location.href='member-list.html'">회원관리</li>
+            <li class="sidebar-item" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item" onclick="location.href='farmer-list.html'">농가정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">설정 ▾</li>
+            <li class="sidebar-item" onclick="location.href='setting-msg.html'" style="padding-left: 30px;">문자설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-cost.html'" style="padding-left: 30px;">비용설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-category.html'" style="padding-left: 30px;">카테고리설정</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">홈 > 근로배정하기</div>
+            <div class="header-right">
+                <span>관리자님 환영합니다</span>
+            </div>
+        </header>
+
+        <div class="content-container" style="background: white;">
+            
+            <div class="page-title">
+                <span id="mainPageDateText">2026년 4월 25일(토)</span> 근로배정하기 
+                <input type="text" id="mainDateHidden" style="width:0; height:0; border:none; padding:0; margin:0; opacity:0;">
+                <span id="mainCalendarIcon" style="font-size: 22px; margin-left: 5px; cursor: pointer;">📅</span>
+                <span style="border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 4px; font-size: 14px; font-weight: normal; margin-right: 5px; color: #94a3b8;">31</span> 
+                <button class="date-btn" id="btnPrevDay">이전날</button>
+                <button class="date-btn" id="btnNextDay">다음날</button>
+            </div>
+
+            <div class="summary-boxes">
+                <div class="summary-box">
+                    <span class="title">배정요청</span> 6 건 / 남 <span class="num-blue">9</span> 명 여 <span class="num-red">5</span> 명
+                </div>
+                <div class="summary-box">
+                    <span class="title">배정완료</span> 6 건 / 남 <span class="num-blue">9</span> 명 여 <span class="num-red">5</span> 명
+                </div>
+                <div class="summary-box">
+                    <span class="title-blue">가용인원</span> 30 명 / 남 <span class="num-blue">20</span> 명 여 <span class="num-red">10</span> 명
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="action-btn btn-navy">배정 제외 근로자 선택</button>
+                <button class="action-btn btn-teal" onclick="document.getElementById('requestModal').style.display='flex'">배정요청접수</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>신청일자</th>
+                        <th>근로일자</th>
+                        <th>농가현장</th>
+                        <th>요청인원</th>
+                        <th>배정인원</th>
+                        <th>인원설정</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">김덕순(송혜)</a> (곡성읍)</td>
+                        <td>남 <span class="num-blue">0</span> 명 여 <span class="num-red">1</span> 명</td>
+                        <td>남 <span class="num-blue">0</span> 명 여 <span class="num-red">1</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="0"> 명 &nbsp; 여 <input type="number" class="input-num" value="1"> 명</td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">김홍배</a> (곡성읍)</td>
+                        <td>남 <span class="num-blue">0</span> 명 여 <span class="num-red">2</span> 명</td>
+                        <td>남 <span class="num-blue">0</span> 명 여 <span class="num-red">2</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="0"> 명 &nbsp; 여 <input type="number" class="input-num" value="2"> 명</td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">김명자</a> (곡성읍)</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="2"> 명 &nbsp; 여 <input type="number" class="input-num" value="0"> 명</td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">배정호</a> (곡성읍)</td>
+                        <td>남 <span class="num-blue">3</span> 명 여 <span class="num-red">2</span> 명</td>
+                        <td>남 <span class="num-blue">3</span> 명 여 <span class="num-red">2</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="3"> 명 &nbsp; 여 <input type="number" class="input-num" value="2"> 명</td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">김봉우</a> (고달면)</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="2"> 명 &nbsp; 여 <input type="number" class="input-num" value="0"> 명</td>
+                    </tr>
+                    <tr>
+                        <td>2026-04-20</td>
+                        <td>2026-04-25(토) <span class="badge-am">오전</span> <span class="badge-pm">오후</span></td>
+                        <td><a class="link-text">한영근</a> (곡성읍)</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <span class="num-blue">2</span> 명 여 <span class="num-red">0</span> 명</td>
+                        <td>남 <input type="number" class="input-num" value="2"> 명 &nbsp; 여 <input type="number" class="input-num" value="0"> 명</td>
+                    </tr>
+                    <tr class="footer-row">
+                        <td colspan="3">합계</td>
+                        <td><b>남 9 명여 5 명</b></td>
+                        <td><b>남 9 명여 5 명</b></td>
+                        <td><b>남 9 명여 5 명</b></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" checked> 연평균 근로시간 균등배치</label>
+                <label><input type="checkbox" checked> 전일 미배치 근로자 우선배치</label>
+                <label><input type="checkbox" checked> 선호근로자 순환배치</label>
+            </div>
+
+            <button class="auto-assign-btn">자동근로배정하기</button>
+
+        </div>
+    </section>
+    <!-- 배정요청접수 모달 -->
+    <div class="modal-overlay" id="requestModal">
+        <div class="modal-content" style="max-width: 500px; padding: 0; border-radius: 12px; overflow: hidden; animation: modalScaleUp 0.3s ease-out;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #e2e8f0;">
+                <h3 style="margin: 0; font-size: 18px; color: #333;">배정요청접수</h3>
+                <button class="modal-close" style="position: static; font-size: 24px; color: #666; background: none; border: none; cursor: pointer; line-height: 1;" onclick="document.getElementById('requestModal').style.display='none'">&times;</button>
+            </div>
+            <div style="padding: 20px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; width: 110px; font-weight: bold; text-align: center;">근로배정일</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="assignDateInput" value="2026-04-25 (토)" style="padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; flex: 1;">
+                                    <select style="padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; width: 80px;">
+                                        <option>07:00</option>
+                                        <option>08:00</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">근로시간</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <label style="margin-right: 15px; font-weight: bold; cursor: pointer;"><input type="checkbox" checked style="accent-color: #0ea5e9;"> 오전</label>
+                                <label style="margin-right: 15px; font-weight: bold; cursor: pointer;"><input type="checkbox" checked style="accent-color: #0ea5e9;"> 오후</label>
+                                <label style="font-weight: bold; cursor: pointer;"><input type="checkbox" style="accent-color: #0ea5e9;"> 초과</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">농가현장</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <select style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; color: #94a3b8;">
+                                    <option>농가 입력</option>
+                                    <option>김덕순(송혜) (곡성읍)</option>
+                                    <option>김홍배 (곡성읍)</option>
+                                    <option>김명자 (곡성읍)</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">계약방식</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <!-- 비워둠 (요청 사항에 맞게) -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">작목 분류</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <select style="width: 150px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <option>선택</option>
+                                    <option>과수</option>
+                                    <option>하우스</option>
+                                    <option>논농사</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">작업 분류</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <select style="width: 150px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                    <option>선택</option>
+                                    <option>파종</option>
+                                    <option>전정</option>
+                                    <option>수확</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">배정요청인원</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                남 <input type="number" id="reqMale" value="1" min="0" style="width: 50px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: right; margin: 0 5px;"> 명
+                                &nbsp;&nbsp;
+                                여 <input type="number" id="reqFemale" value="1" min="0" style="width: 50px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: right; margin: 0 5px;"> 명
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; background: #f8fafc; border: 1px solid #e2e8f0; font-weight: bold; text-align: center;">비용</td>
+                            <td style="padding: 10px; border: 1px solid #e2e8f0;">
+                                <input type="text" id="totalCost" value="200,000" readonly style="width: 100px; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: right; margin-right: 5px; background: #f1f5f9; color: #333; font-weight: bold;"> 원
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding: 15px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <button style="background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">삭제</button>
+                <div style="display: flex; gap: 10px;">
+                    <button style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="document.getElementById('requestModal').style.display='none'">접수완료</button>
+                    <button style="background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="document.getElementById('requestModal').style.display='none'">창닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reqMale = document.getElementById('reqMale');
+            const reqFemale = document.getElementById('reqFemale');
+            const dateInput = document.getElementById('assignDateInput');
+            const totalCost = document.getElementById('totalCost');
+
+            function getCostConfig() {
+                // 설정 메뉴(비용설정)에서 저장된 값 불러오기 (기본값: 100,000)
+                const getVal = (key) => parseInt((localStorage.getItem(key) || '100000').replace(/,/g, '')) || 100000;
+                return {
+                    weekday: { m: getVal('cost_weekday_m'), f: getVal('cost_weekday_f') },
+                    sat: { m: getVal('cost_sat_m'), f: getVal('cost_sat_f') },
+                    sun: { m: getVal('cost_sun_m'), f: getVal('cost_sun_f') },
+                    hol: { m: getVal('cost_hol_m'), f: getVal('cost_hol_f') }
+                };
+            }
+
+            function getDayType(dateStr) {
+                if (dateStr.includes('공휴일')) return 'hol';
+                if (dateStr.includes('(토)')) return 'sat';
+                if (dateStr.includes('(일)')) return 'sun';
+                return 'weekday'; // 월~금
+            }
+
+            function calculateCost() {
+                const maleCount = parseInt(reqMale.value) || 0;
+                const femaleCount = parseInt(reqFemale.value) || 0;
+                
+                const config = getCostConfig();
+                const dayType = getDayType(dateInput.value);
+                
+                const maleCost = config[dayType].m;
+                const femaleCost = config[dayType].f;
+                
+                const total = (maleCount * maleCost) + (femaleCount * femaleCost);
+                totalCost.value = total.toLocaleString();
+            }
+
+            reqMale.addEventListener('input', calculateCost);
+            reqFemale.addEventListener('input', calculateCost);
+            reqMale.addEventListener('change', calculateCost);
+            reqFemale.addEventListener('change', calculateCost);
+            dateInput.addEventListener('input', calculateCost);
+            dateInput.addEventListener('change', calculateCost);
+
+            // 공휴일 목록 (월-일 형식, 매년 반복되는 고정 공휴일 예시)
+            const holidays = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
+
+            const fpConfig = {
+                locale: "ko",
+                dateFormat: "Y-m-d (D)",
+                defaultDate: "2026-04-25",
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    const date = dayElem.dateObj;
+                    const day = date.getDay(); // 0: 일요일, 6: 토요일
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    const mmdd = `${mm}-${dd}`;
+
+                    if (day === 0 || holidays.includes(mmdd)) {
+                        dayElem.style.color = "#ef4444";
+                        dayElem.style.fontWeight = "bold";
+                    } else if (day === 6) {
+                        dayElem.style.color = "#3b82f6";
+                        dayElem.style.fontWeight = "bold";
+                    }
+                }
+            };
+
+            // 모달 안의 달력 연동
+            flatpickr("#assignDateInput", fpConfig);
+
+            // 상단 메인 타이틀 달력 연동
+            const mainPageDateText = document.getElementById('mainPageDateText');
+            const mainPicker = flatpickr("#mainDateHidden", {
+                ...fpConfig,
+                onChange: function(selectedDates) {
+                    if (selectedDates.length > 0) {
+                        const d = selectedDates[0];
+                        const year = d.getFullYear();
+                        const month = d.getMonth() + 1;
+                        const date = d.getDate();
+                        const days = ['일', '월', '화', '수', '목', '금', '토'];
+                        const dayName = days[d.getDay()];
+                        mainPageDateText.innerText = `${year}년 ${month}월 ${date}일(${dayName})`;
+                    }
+                }
+            });
+
+            // 달력 아이콘 클릭 시 메인 달력 열기
+            document.getElementById('mainCalendarIcon').addEventListener('click', () => {
+                mainPicker.open();
+            });
+
+            // 이전날 / 다음날 버튼 기능
+            document.getElementById('btnPrevDay').addEventListener('click', () => {
+                const current = mainPicker.selectedDates[0] || new Date('2026-04-25');
+                current.setDate(current.getDate() - 1);
+                mainPicker.setDate(current, true);
+            });
+            document.getElementById('btnNextDay').addEventListener('click', () => {
+                const current = mainPicker.selectedDates[0] || new Date('2026-04-25');
+                current.setDate(current.getDate() + 1);
+                mainPicker.setDate(current, true);
+            });
+
+            // 초기 실행 시 비용 계산 반영
+            calculateCost();
+        });
+    </script>
+</body>
+</html>

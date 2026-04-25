@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 근로자 신규 등록</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협</li>
+            <li class="sidebar-item">근로배정현황</li>
+            <li class="sidebar-item">근로배정하기</li>
+            <li class="sidebar-item">근로배정달력</li>
+            <li class="sidebar-item">근로배정정보</li>
+            <li class="sidebar-item parent">기본정보관리</li>
+            <li class="sidebar-item">센터정보</li>
+            <li class="sidebar-item">회원관리</li>
+            <li class="sidebar-item selected" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item">농가정보</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">홈 > 기본정보관리 > 근로자정보 > 신규등록</div>
+            <div class="header-right">
+                <span>관리자님 환영합니다</span>
+                <span>비밀번호변경</span>
+                <span>로그아웃</span>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <div class="content-title">
+                📝 근로자 신규 등록
+                <button onclick="location.href='worker-list.html'" style="margin-left: auto; background: #94a3b8; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 14px;">목록으로 돌아가기</button>
+            </div>
+
+            <div class="register-form-container" style="background: white; border: 1px solid #e2e8f0; border-radius: 15px; padding: 40px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                <form>
+                    <!-- 기본 정보 -->
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--navy-dark); border-left: 4px solid var(--btn-blue); padding-left: 10px;">기본 정보</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">👤 성명</label>
+                                <input type="text" placeholder="성명을 입력하세요" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">🚻 성별 선택</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <label style="cursor: pointer;">
+                                        <input type="radio" name="gender" value="male" style="display:none;" checked>
+                                        <div class="badge male" style="width: 100px; height: 40px; border: 2px solid #3b82f6;">남성</div>
+                                    </label>
+                                    <label style="cursor: pointer;">
+                                        <input type="radio" name="gender" value="female" style="display:none;">
+                                        <div class="badge female" style="width: 100px; height: 40px; border: 1px solid #fecdd3; opacity: 0.6;">여성</div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">📅 생년월일</label>
+                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">📍 활동 가능 지역</label>
+                                <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                    <option>전체 지역</option>
+                                    <option>석곡면</option>
+                                    <option>목사동면</option>
+                                    <option>죽곡면</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 연락처 정보 -->
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--navy-dark); border-left: 4px solid var(--btn-blue); padding-left: 10px;">연락처 및 주소</h3>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">📞 휴대전화 번호</label>
+                                <input type="text" placeholder="010-0000-0000" style="width: 100%; max-width: 400px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">🏠 거주지 주소</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="우편번호" style="width: 120px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                    <button type="button" style="background: #475569; color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer;">주소 검색</button>
+                                </div>
+                                <input type="text" placeholder="기본 주소" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; margin-bottom: 10px;">
+                                <input type="text" placeholder="상세 주소를 입력하세요" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 정산 정보 -->
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="font-size: 18px; margin-bottom: 20px; color: var(--navy-dark); border-left: 4px solid var(--btn-blue); padding-left: 10px;">계좌 정보 (급여 지급용)</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
+                            <select style="padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                <option>은행 선택</option>
+                                <option>농협</option>
+                                <option>국민은행</option>
+                                <option>신한은행</option>
+                            </select>
+                            <input type="text" placeholder="계좌번호를 '-' 없이 입력하세요" style="padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                        </div>
+                    </div>
+
+                    <!-- 하단 버튼 -->
+                    <div style="display: flex; justify-content: center; gap: 15px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
+                        <button type="button" class="btn" style="width: 150px; height: 50px; font-size: 16px; font-weight: 700; border-radius: 8px;" onclick="history.back()">취소</button>
+                        <button type="submit" style="width: 150px; height: 50px; font-size: 16px; font-weight: 700; border-radius: 8px; background: var(--btn-green); color: white; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);">저장하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 성별 선택 시 시각적 레이드 효과 (간단 예시)
+        const genderRadios = document.querySelectorAll('input[name="gender"]');
+        genderRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.querySelectorAll('.badge').forEach(b => {
+                    b.style.opacity = '0.4';
+                    b.style.border = '1px solid #eee';
+                });
+                const badge = radio.nextElementSibling;
+                badge.style.opacity = '1';
+                badge.style.border = radio.value === 'male' ? '2px solid #3b82f6' : '2px solid #f43f5e';
+            });
+        });
+    </script>
+</body>
+</html>

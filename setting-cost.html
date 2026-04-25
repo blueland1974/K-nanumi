@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 비용설정</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+    <style>
+        .page-title { font-size: 24px; font-weight: 700; margin-bottom: 30px; color: #333; }
+        .cost-table { width: 600px; border-collapse: collapse; text-align: center; border: 1px solid #e2e8f0; }
+        .cost-table th { background: #f1f5f9; padding: 15px; border: 1px solid #e2e8f0; font-size: 15px; font-weight: 700; color: #333; }
+        .cost-table td { padding: 15px; border: 1px solid #e2e8f0; font-size: 15px; }
+        .input-cost { width: 120px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; text-align: right; font-size: 15px; margin-right: 5px; }
+        .btn-save { background: #00897b; color: white; border: none; padding: 10px 30px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 16px; float: right; margin-right: 15px; }
+        .table-wrapper { width: 600px; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협 ▾</li>
+            <li class="sidebar-item" onclick="location.href='index.html'">근로배정현황</li>
+            <li class="sidebar-item" onclick="location.href='assign-work.html'">근로배정하기</li>
+            <li class="sidebar-item" onclick="location.href='calendar.html'">근로배정달력</li>
+            <li class="sidebar-item" onclick="location.href='assign-info.html'">근로배정정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">기본정보관리</li>
+            <li class="sidebar-item" onclick="location.href='center-info.html'">센터정보</li>
+            <li class="sidebar-item" onclick="location.href='member-list.html'">회원관리</li>
+            <li class="sidebar-item" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item" onclick="location.href='farmer-list.html'">농가정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">설정 ▾</li>
+            <li class="sidebar-item" onclick="location.href='setting-msg.html'" style="padding-left: 30px;">문자설정</li>
+            <li class="sidebar-item selected" onclick="location.href='setting-cost.html'" style="padding-left: 30px; margin: 0 10px; border-radius: 20px;">비용설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-category.html'" style="padding-left: 30px;">카테고리설정</li>
+        </ul>
+    </aside>
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">설정 > 비용설정</div>
+            <div class="header-right"><span>관리자님 환영합니다</span></div>
+        </header>
+        <div class="content-container" style="background: white; padding: 40px;">
+            <div class="page-title">비용설정</div>
+            <div class="table-wrapper">
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 120px;">구분</th>
+                            <th>남자</th>
+                            <th>여자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:bold;">월~금</td>
+                            <td><input type="text" id="cost_weekday_m" class="input-cost" value="100,000"> 원</td>
+                            <td><input type="text" id="cost_weekday_f" class="input-cost" value="100,000"> 원</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">토요일</td>
+                            <td><input type="text" id="cost_sat_m" class="input-cost" value="100,000"> 원</td>
+                            <td><input type="text" id="cost_sat_f" class="input-cost" value="100,000"> 원</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">일요일</td>
+                            <td><input type="text" id="cost_sun_m" class="input-cost" value="100,000"> 원</td>
+                            <td><input type="text" id="cost_sun_f" class="input-cost" value="100,000"> 원</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">공휴일</td>
+                            <td><input type="text" id="cost_hol_m" class="input-cost" value="100,000"> 원</td>
+                            <td><input type="text" id="cost_hol_f" class="input-cost" value="100,000"> 원</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn-save">저장</button>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const keys = [
+                'cost_weekday_m', 'cost_weekday_f',
+                'cost_sat_m', 'cost_sat_f',
+                'cost_sun_m', 'cost_sun_f',
+                'cost_hol_m', 'cost_hol_f'
+            ];
+
+            // 숫자 콤마 포맷팅 함수
+            const formatNumber = (val) => {
+                const num = val.replace(/[^0-9]/g, '');
+                return num ? parseInt(num).toLocaleString() : '';
+            };
+
+            // 페이지 로드 시 localStorage에서 값 불러오기
+            keys.forEach(key => {
+                const input = document.getElementById(key);
+                const val = localStorage.getItem(key);
+                if (val) {
+                    input.value = formatNumber(val);
+                }
+
+                // 입력 시 콤마 자동 생성
+                input.addEventListener('input', (e) => {
+                    e.target.value = formatNumber(e.target.value);
+                });
+            });
+
+            // 저장 버튼 클릭 시 localStorage에 저장
+            document.querySelector('.btn-save').addEventListener('click', () => {
+                keys.forEach(key => {
+                    localStorage.setItem(key, document.getElementById(key).value);
+                });
+                alert('비용 설정이 저장되었습니다.');
+            });
+        });
+    </script>
+</body>
+</html>

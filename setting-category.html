@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 카테고리설정</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+    <style>
+        .page-title { font-size: 24px; font-weight: 700; margin-bottom: 25px; color: #333; }
+        .filter-row { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .search-input { padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 250px; background: #f8fafc; font-size: 14px; }
+        .select-input { padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px; }
+        .category-table { width: 100%; border-collapse: collapse; text-align: center; border: 1px solid #e2e8f0; }
+        .category-table th { background: #f8fafc; padding: 15px; border: 1px solid #e2e8f0; font-size: 15px; font-weight: bold; color: #333; }
+        .category-table td { padding: 15px; border: 1px solid #e2e8f0; font-size: 15px; text-align: left; }
+        .category-table td.center { text-align: center; font-weight: bold; }
+        .btn-add { background: #00897b; color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 15px; color: #475569; }
+        .page-links { display: flex; gap: 15px; align-items: center; }
+        .page-links span { cursor: pointer; }
+        .page-links .active { font-weight: bold; color: #333; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협 ▾</li>
+            <li class="sidebar-item" onclick="location.href='index.html'">근로배정현황</li>
+            <li class="sidebar-item" onclick="location.href='assign-work.html'">근로배정하기</li>
+            <li class="sidebar-item" onclick="location.href='calendar.html'">근로배정달력</li>
+            <li class="sidebar-item" onclick="location.href='assign-info.html'">근로배정정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">기본정보관리</li>
+            <li class="sidebar-item" onclick="location.href='center-info.html'">센터정보</li>
+            <li class="sidebar-item" onclick="location.href='member-list.html'">회원관리</li>
+            <li class="sidebar-item" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item" onclick="location.href='farmer-list.html'">농가정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">설정 ▾</li>
+            <li class="sidebar-item" onclick="location.href='setting-msg.html'" style="padding-left: 30px;">문자설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-cost.html'" style="padding-left: 30px;">비용설정</li>
+            <li class="sidebar-item selected" onclick="location.href='setting-category.html'" style="padding-left: 30px; margin: 0 10px; border-radius: 20px;">카테고리설정</li>
+        </ul>
+    </aside>
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">설정 > 카테고리설정</div>
+            <div class="header-right"><span>관리자님 환영합니다</span></div>
+        </header>
+        <div class="content-container" style="background: white; padding: 40px;">
+            <div class="page-title">카테고리설정</div>
+            <div class="filter-row">
+                <input type="text" class="search-input" placeholder="통합검색">
+                <div style="font-size: 15px;">
+                    <select class="select-input">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select> 개씩 보기
+                </div>
+            </div>
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th style="width: 200px;">카테고리 <span style="color:#94a3b8; font-size:12px;">▴</span></th>
+                        <th>분류항목 <span style="color:#94a3b8; font-size:12px;">▴</span></th>
+                        <th style="width: 120px;">추가등록 <span style="color:#94a3b8; font-size:12px;">▴</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">국가 설정</td>
+                        <td>라오스</td>
+                        <td class="center"><button class="btn-add">추가</button></td>
+                    </tr>
+                    <tr>
+                        <td class="center">농가 작목</td>
+                        <td>과수, 하우스, 논농사, 특용작물, 기타, 육묘, 테스트, ggg, 밭농사</td>
+                        <td class="center"><button class="btn-add">추가</button></td>
+                    </tr>
+                    <tr>
+                        <td class="center">읍면동 설정</td>
+                        <td>곡성읍, 고달면, 삼기면, 오곡면, 석곡농협, 옥과농협, 죽곡면, 옥과면, 겸면, 입면, 석곡면, 오산면</td>
+                        <td class="center"><button class="btn-add">추가</button></td>
+                    </tr>
+                    <tr>
+                        <td class="center">작업 형태</td>
+                        <td>파종, 전정, 수확, 포장, 제초, 육묘, 정식, 적과, 기타, 정리, 퇴비살포, 비닐피복, 퇴비운반, 비료살포</td>
+                        <td class="center"><button class="btn-add">추가</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span>전체 4 건</span>
+                <div class="page-links">
+                    <span>이전</span>
+                    <span class="active">1</span>
+                    <span>다음</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

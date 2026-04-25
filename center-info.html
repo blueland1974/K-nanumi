@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Nanumi - 센터 정보 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .info-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy-dark);
+            font-size: 14px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        .logo-upload {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #94a3b8;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">나누미 1.0</div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item parent">석곡농협 ▾</li>
+            <li class="sidebar-item" onclick="location.href='index.html'">근로배정현황</li>
+            <li class="sidebar-item" onclick="location.href='assign-work.html'">근로배정하기</li>
+            <li class="sidebar-item" onclick="location.href='calendar.html'">근로배정달력</li>
+            <li class="sidebar-item" onclick="location.href='assign-info.html'">근로배정정보</li>
+            <li class="sidebar-item parent">기본정보관리</li>
+            <li class="sidebar-item selected" onclick="location.href='center-info.html'">센터정보</li>
+            <li class="sidebar-item" onclick="location.href='member-list.html'">회원관리</li>
+            <li class="sidebar-item" onclick="location.href='worker-list.html'">근로자정보</li>
+            <li class="sidebar-item" onclick="location.href='farmer-list.html'">농가정보</li>
+            <li class="sidebar-item parent" style="margin-top: 15px;">설정 ▾</li>
+            <li class="sidebar-item" onclick="location.href='setting-msg.html'" style="padding-left: 30px;">문자설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-cost.html'" style="padding-left: 30px;">비용설정</li>
+            <li class="sidebar-item" onclick="location.href='setting-category.html'" style="padding-left: 30px;">카테고리설정</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="main-area">
+        <header class="top-header">
+            <div class="breadcrumb">홈 > 기본정보관리 > 센터정보</div>
+            <div class="header-right">
+                <span>관리자님 환영합니다</span>
+            </div>
+        </header>
+
+        <div class="content-container">
+            <div class="content-title">
+                🏢 센터 정보 관리
+                <button style="margin-left:auto; background: var(--btn-blue); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:700; cursor:pointer;">정보 저장하기</button>
+            </div>
+
+            <div class="info-grid">
+                <!-- 기본 제원 -->
+                <div class="info-section">
+                    <h3 style="margin-bottom: 25px; font-size: 18px; color: #1e293b; border-left: 4px solid var(--btn-green); padding-left: 10px;">📋 일반 정보</h3>
+                    <div class="form-group">
+                        <label>센터(농협)명</label>
+                        <input type="text" value="석곡농협 인력지원센터">
+                    </div>
+                    <div class="form-group">
+                        <label>대표자 성명</label>
+                        <input type="text" value="한석곡">
+                    </div>
+                    <div class="form-group">
+                        <label>사업자 등록번호</label>
+                        <input type="text" value="123-45-67890">
+                    </div>
+                    <div class="form-group">
+                        <label>대표 전화번호</label>
+                        <input type="text" value="061-123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label>센터 주소</label>
+                        <input type="text" value="전라남도 곡성군 석곡면 석곡로 123" style="margin-bottom:8px;">
+                        <input type="text" placeholder="상세주소">
+                    </div>
+                </div>
+
+                <!-- 설정 및 로고 -->
+                <div class="info-section">
+                    <h3 style="margin-bottom: 25px; font-size: 18px; color: #1e293b; border-left: 4px solid var(--btn-green); padding-left: 10px;">🖼️ 기관 로고 및 설정</h3>
+                    <div class="form-group">
+                        <label>기관 로고 등록</label>
+                        <div class="logo-upload">
+                            <span style="font-size: 24px;">+</span>
+                            <span style="font-size: 12px;">파일 선택</span>
+                        </div>
+                        <p style="font-size: 12px; color: #94a3b8;">* 300x300px 이상의 투명 PNG 권장</p>
+                    </div>
+                    <div class="form-group">
+                        <label>운영 시간 설정</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="time" value="08:00" style="width: 120px;">
+                            <span>~</span>
+                            <input type="time" value="18:00" style="width: 120px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>센터 소개 문구</label>
+                        <textarea rows="4">우리 석곡농협은 농업인의 행복과 함께하며 지역 경제 발전에 최선을 다하고 있습니다.</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
