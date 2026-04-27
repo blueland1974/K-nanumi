@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Nanumi - 근로 배정 정보</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -46,7 +49,7 @@
             <div class="search-section" style="background: white; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 10px; align-items: end;">
                 <div>
                     <label style="display:block; font-size:12px; margin-bottom:5px; font-weight:700;">기간 선택</label>
-                    <input type="date" style="padding:10px; border:1px solid #ddd; border-radius:6px; width:100%;">
+                    <input type="text" id="filterDate" placeholder="날짜 선택" style="padding:10px; border:1px solid #ddd; border-radius:6px; width:100%;">
                 </div>
                 <div>
                     <label style="display:block; font-size:12px; margin-bottom:5px; font-weight:700;">농가명</label>
@@ -100,5 +103,31 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const holidays = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
+            
+            flatpickr("#filterDate", {
+                locale: "ko",
+                dateFormat: "Y-m-d (D)",
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    const date = dayElem.dateObj;
+                    const day = date.getDay(); 
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    const mmdd = `${mm}-${dd}`;
+
+                    if (day === 0 || holidays.includes(mmdd)) {
+                        dayElem.style.color = "#ef4444";
+                        dayElem.style.fontWeight = "bold";
+                    } else if (day === 6) {
+                        dayElem.style.color = "#3b82f6";
+                        dayElem.style.fontWeight = "bold";
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

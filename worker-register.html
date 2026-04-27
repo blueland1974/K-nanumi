@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K-Nanumi - 근로자 신규 등록</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -66,7 +69,7 @@
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">📅 생년월일</label>
-                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                <input type="text" id="birthDate" placeholder="날짜 선택" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 15px;">📍 활동 가능 지역</label>
@@ -136,6 +139,30 @@
                 const badge = radio.nextElementSibling;
                 badge.style.opacity = '1';
                 badge.style.border = radio.value === 'male' ? '2px solid #3b82f6' : '2px solid #f43f5e';
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const holidays = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
+            
+            flatpickr("#birthDate", {
+                locale: "ko",
+                dateFormat: "Y-m-d (D)",
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    const date = dayElem.dateObj;
+                    const day = date.getDay(); 
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    const mmdd = `${mm}-${dd}`;
+
+                    if (day === 0 || holidays.includes(mmdd)) {
+                        dayElem.style.color = "#ef4444";
+                        dayElem.style.fontWeight = "bold";
+                    } else if (day === 6) {
+                        dayElem.style.color = "#3b82f6";
+                        dayElem.style.fontWeight = "bold";
+                    }
+                }
             });
         });
     </script>

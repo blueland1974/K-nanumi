@@ -5,6 +5,9 @@
     <title>나누미 1.0 - 석곡농협</title>
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -42,12 +45,14 @@
         </header>
 
         <div class="content-container">
-            <div class="content-title">
-                <span id="display-date-text">2025년 7월 9일(수)</span> 근로배정현황
-                <span class="icon">📅</span>
-                <button class="calendar-btn" onclick="changeDate(-1)">이전날</button>
-                <button class="calendar-btn" onclick="changeDate(1)">다음날</button>
-                <span id="current-date-display" style="font-size: 14px; color: #64748b; font-weight: 400; margin-left: auto;">2025년 7월 9일 기준</span>
+            <div class="page-title" style="display:flex; align-items:center; font-size:24px; font-weight:700; margin-bottom:20px;">
+                <span id="mainPageDateText">2026년 4월 25일(토)</span> 근로배정현황
+                <input type="text" id="mainDateHidden" style="width:0; height:0; border:none; padding:0; margin:0; opacity:0;">
+                <span id="mainCalendarIcon" style="font-size: 22px; margin-left: 5px; cursor: pointer;">📅</span>
+                <span style="border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px 4px; font-size: 14px; font-weight: normal; margin-right: 5px; color: #94a3b8;">31</span> 
+                <button class="date-btn" id="btnPrevDay" style="margin-right: 5px;">이전날</button>
+                <button class="date-btn" id="btnNextDay">다음날</button>
+                <span id="current-date-display" style="font-size: 14px; color: #64748b; font-weight: 400; margin-left: auto;">2026년 4월 25일 기준</span>
             </div>
 
             <!-- Summary -->
@@ -237,9 +242,62 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 초기 시간 설정
-            // updateCurrentTime();
-            // setInterval(updateCurrentTime, 60000);
+            // 공휴일 목록
+            const holidays = ['01-01', '03-01', '05-05', '06-06', '08-15', '10-03', '10-09', '12-25'];
+
+            const fpConfig = {
+                locale: "ko",
+                dateFormat: "Y-m-d (D)",
+                defaultDate: "2026-04-25",
+                onDayCreate: function(dObj, dStr, fp, dayElem) {
+                    const date = dayElem.dateObj;
+                    const day = date.getDay(); // 0: 일요일, 6: 토요일
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    const mmdd = `${mm}-${dd}`;
+
+                    if (day === 0 || holidays.includes(mmdd)) {
+                        dayElem.style.color = "#ef4444";
+                        dayElem.style.fontWeight = "bold";
+                    } else if (day === 6) {
+                        dayElem.style.color = "#3b82f6";
+                        dayElem.style.fontWeight = "bold";
+                    }
+                }
+            };
+
+            const mainPageDateText = document.getElementById('mainPageDateText');
+            const currentDateDisplay = document.getElementById('current-date-display');
+            const mainPicker = flatpickr("#mainDateHidden", {
+                ...fpConfig,
+                onChange: function(selectedDates) {
+                    if (selectedDates.length > 0) {
+                        const d = selectedDates[0];
+                        const year = d.getFullYear();
+                        const month = d.getMonth() + 1;
+                        const date = d.getDate();
+                        const days = ['일', '월', '화', '수', '목', '금', '토'];
+                        const dayName = days[d.getDay()];
+                        mainPageDateText.innerText = `${year}년 ${month}월 ${date}일(${dayName})`;
+                        currentDateDisplay.innerText = `${year}년 ${month}월 ${date}일 기준`;
+                    }
+                }
+            });
+
+            document.getElementById('mainCalendarIcon').addEventListener('click', () => {
+                mainPicker.open();
+            });
+
+            document.getElementById('btnPrevDay').addEventListener('click', () => {
+                const current = mainPicker.selectedDates[0] || new Date('2026-04-25');
+                current.setDate(current.getDate() - 1);
+                mainPicker.setDate(current, true);
+            });
+            document.getElementById('btnNextDay').addEventListener('click', () => {
+                const current = mainPicker.selectedDates[0] || new Date('2026-04-25');
+                current.setDate(current.getDate() + 1);
+                mainPicker.setDate(current, true);
+            });
         });
     </script>
 </body>
